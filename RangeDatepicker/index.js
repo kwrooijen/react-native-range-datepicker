@@ -109,15 +109,9 @@ export default class RangeDatepicker extends Component {
         untilDate = date;
       }
       else{
-        startDate = date;
-        untilDate = date;
+        startDate = null;
+        untilDate = null;
       }
-    }
-    else if(this.state.startDate &&
-            this.state.startDate == this.state.untilDate &&
-            date.format('YYYYMMDD') == this.state.startDate.format('YYYYMMDD')) {
-      startDate = null;
-      untilDate = null;
     }
     else if(!this.isInvalidRange(date)) {
       startDate = date;
@@ -174,6 +168,9 @@ export default class RangeDatepicker extends Component {
   }
 
   handleConfirmDate(){
+    if(!this.state.untilDate) {
+      this.state.untilDate = this.state.startDate;
+    }
     this.props.onConfirm && this.props.onConfirm(this.state.startDate,this.state.untilDate);
   }
 

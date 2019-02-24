@@ -33,10 +33,6 @@ export default class Day extends React.Component {
         dayStyle = {backgroundColor : dayProps.selectedBackgroundColor, borderRadius: Math.floor(DEVICE_WIDTH / 7) };
         textDayStyle = {color: dayProps.selectedTextColor};
         break;
-      case "double" :
-        dayStyle = {backgroundColor : dayProps.selectedBackgroundColor};
-        textDayStyle = {color: dayProps.selectedTextColor};
-        break;
       case "first" :
         dayStyle = {backgroundColor : dayProps.selectedBackgroundColor, borderBottomLeftRadius: Math.floor(DEVICE_WIDTH / 7), borderTopLeftRadius: Math.floor(DEVICE_WIDTH / 7) };
         textDayStyle = {color: dayProps.selectedTextColor};
