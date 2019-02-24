@@ -181,8 +181,6 @@ export default class RangeDatepicker extends Component {
     const { selectedBackgroundColor, selectedTextColor, todayColor, ignoreMinDate, minDate, maxDate } = this.props;
     let { availableDates, startDate, untilDate } = this.state;
 
-
-
     if(availableDates && availableDates.length > 0){
       availableDates = availableDates.filter(function(d){
         if(d.indexOf(month) >= 0)
@@ -262,6 +260,7 @@ export default class RangeDatepicker extends Component {
             <Button
               title="Select Date"
               onPress={this.handleConfirmDate}
+              disabled={!this.state.startDate}
               color={this.props.buttonColor} />
           </View>
         </View>
