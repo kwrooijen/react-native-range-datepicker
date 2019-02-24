@@ -91,6 +91,11 @@ export default class Month extends React.Component {
           if((startDate && startDate.format('YYYYMMDD') < currDate.format('YYYYMMDD')) &&
             (untilDate && untilDate.format('YYYYMMDD') > currDate.format('YYYYMMDD')))
             dayObject.type = 'between';
+          if(untilDate && startDate &&
+             untilDate == startDate &&
+             untilDate.format('YYYYMMDD') == currDate.format('YYYYMMDD')){
+            dayObject.type = 'double';
+          }
 
           dayObject.date = currDate.clone().format('YYYYMMDD');
           dayColumn.push(dayObject);

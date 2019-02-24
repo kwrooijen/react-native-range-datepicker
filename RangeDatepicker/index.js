@@ -109,9 +109,15 @@ export default class RangeDatepicker extends Component {
         untilDate = date;
       }
       else{
-        startDate = null;
-        untilDate = null;
+        startDate = date;
+        untilDate = date;
       }
+    }
+    else if(this.state.startDate &&
+            this.state.startDate == this.state.untilDate &&
+            date.format('YYYYMMDD') == this.state.startDate.format('YYYYMMDD')) {
+      startDate = null;
+      untilDate = null;
     }
     else if(!this.isInvalidRange(date)) {
       startDate = date;
