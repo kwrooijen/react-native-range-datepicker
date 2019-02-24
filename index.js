@@ -4,4 +4,3 @@ import SingleDatepicker from './SingleDatepicker';
 
 export { SingleDatepicker };
 export default RangeDatepicker;
-	
