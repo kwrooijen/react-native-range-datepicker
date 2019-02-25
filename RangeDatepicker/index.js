@@ -70,6 +70,7 @@ export default class RangeDatepicker extends Component {
     timePickerType: 0,
     timePickerFirst: null,
     timePickerSecond: null,
+    title: null,
   };
 
 
@@ -102,6 +103,7 @@ export default class RangeDatepicker extends Component {
     timePickerType: PropTypes.number,
     timePickerFirst: PropTypes.object,
     timePickerSecond: PropTypes.object,
+    title: PropTypes.string,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -298,8 +300,7 @@ export default class RangeDatepicker extends Component {
       return(
         <View style={{backgroundColor: '#fff', zIndex: 1000, alignSelf: 'center'}}>
           {
-            this.props.showClose || this.props.showReset ?
-              (<View style={{ flexDirection: 'row', justifyContent: "space-between", padding: 20, paddingBottom: 10}}>
+            (<View style={{ flexDirection: 'row', justifyContent: "space-between", padding: 20, paddingBottom: 10}}>
                  <Icon
                    style={{fontSize: 30, color: this.props.buttonColor}}
                    onPress={this.props.onClose}
@@ -307,12 +308,16 @@ export default class RangeDatepicker extends Component {
                          "md-arrow-round-back" :
                          "ios-arrow-round-back"}>
                  </Icon>
+
+               <View style={{flex: 1}}>
+                 <Text style={{textAlign: "center", fontSize: 23}}>
+                   {this.props.title}
+                 </Text>
+               </View>
                </View>)
-              :
-              null
           }
 
-          <View style={{ flexDirection: 'row', justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 5, alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 0, alignItems: 'center'}}>
             <View style={{flex: 1}}>
               <Text style={{fontSize: 18, fontWeight: 'bold', color: '#666'}}>
                 { this.state.startDate ? moment(this.state.startDate).format("MMM DD YYYY") : this.props.placeHolderStart}
