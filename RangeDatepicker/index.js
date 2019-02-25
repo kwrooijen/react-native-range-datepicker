@@ -306,7 +306,8 @@ export default class RangeDatepicker extends Component {
                    onPress={this.props.onClose}
                    name={Platform.OS == "android" ?
                          "md-arrow-round-back" :
-                         "ios-arrow-round-back"}>
+                         "ios-arrow-round-back"}
+                 >
                  </Icon>
 
                <View style={{flex: 1}}>
@@ -317,7 +318,7 @@ export default class RangeDatepicker extends Component {
                </View>)
           }
 
-          <View style={{ flexDirection: 'row', justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 0, alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', justifyContent: "space-between", paddingTop: 10, paddingHorizontal: 20, paddingBottom: 0, alignItems: 'center'}}>
             <View style={{flex: 1}}>
               <Text style={{fontSize: 18, fontWeight: 'bold', color: '#666'}}>
                 { this.state.startDate ? moment(this.state.startDate).format("MMM DD YYYY") : this.props.placeHolderStart}
@@ -325,9 +326,12 @@ export default class RangeDatepicker extends Component {
             </View>
 
             <View>
-              <Text style={{fontSize: 23, fontWeight: 'bold'}}>
-                /
-              </Text>
+              <Icon
+                name={Platform.OS == "android" ?
+                      "md-arrow-forward" :
+                      "ios-arrow-forward"}
+                style={{fontSize: 30, fontWeight: 'bold'}}>
+              </Icon>
             </View>
 
             <View style={{flex: 1}}>
