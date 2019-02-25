@@ -316,8 +316,8 @@ export default class RangeDatepicker extends Component {
                    style={{fontSize: 30, color: this.props.buttonColor}}
                    onPress={this.props.onClose}
                    name={Platform.OS == "android" ?
-                         "md-arrow-round-back" :
-                         "ios-arrow-round-back"}
+                         "md-arrow-back" :
+                         "ios-arrow-back"}
                  >
                  </Icon>
 
@@ -339,8 +339,8 @@ export default class RangeDatepicker extends Component {
             <View>
               <Icon
                 name={Platform.OS == "android" ?
-                      "md-arrow-forward" :
-                      "ios-arrow-forward"}
+                      "md-arrow-round-forward" :
+                      "ios-arrow-round-forward"}
                 style={{fontSize: 30, fontWeight: 'bold'}}>
               </Icon>
             </View>
