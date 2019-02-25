@@ -18,6 +18,7 @@ import Month from './Month';
 import moment from 'moment';
 
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
@@ -299,13 +300,14 @@ export default class RangeDatepicker extends Component {
           {
             this.props.showClose || this.props.showReset ?
               (<View style={{ flexDirection: 'row', justifyContent: "space-between", padding: 20, paddingBottom: 10}}>
-                {
-                  this.props.showClose && <Text style={{fontSize: 20}} onPress={this.props.onClose}>Close</Text>
-                }
-                {
-                  this.props.showReset && <Text style={{fontSize: 20}} onPress={this.onReset}>Reset</Text>
-                }
-              </View>)
+                 <Icon
+                   style={{fontSize: 30, color: this.props.buttonColor}}
+                   onPress={this.props.onClose}
+                   name={Platform.OS == "android" ?
+                         "md-arrow-round-back" :
+                         "ios-arrow-round-back"}>
+                 </Icon>
+               </View>)
               :
               null
           }
