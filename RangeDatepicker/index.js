@@ -32,8 +32,8 @@ export default class RangeDatepicker extends Component {
       availableDates: props.availableDates || null,
       timePickerOpen: props.timePickerOpen || false,
       timePickerType: props.timePickerType || 0,
-      timePickerFirst: props.timePickerFirst || null,
-      timePickerSecond: props.timePickerSecond || null,
+      startTime: props.startTime || null,
+      untilTime: props.untilTime || null,
     };
 
     this.onSelectDate = this.onSelectDate.bind(this);
@@ -68,8 +68,8 @@ export default class RangeDatepicker extends Component {
     infoContainerStyle: {marginRight: 20, paddingHorizontal: 20, paddingVertical: 5, backgroundColor: 'green', borderRadius: 20, alignSelf: 'flex-end'},
     timePickerOpen: false,
     timePickerType: 0,
-    timePickerFirst: null,
-    timePickerSecond: null,
+    startTime: null,
+    untilTime: null,
     title: null,
   };
 
@@ -101,8 +101,8 @@ export default class RangeDatepicker extends Component {
     infoContainerStyle: PropTypes.object,
     timePickerOpen: PropTypes.bool,
     timePickerType: PropTypes.number,
-    timePickerFirst: PropTypes.object,
-    timePickerSecond: PropTypes.object,
+    startTime: PropTypes.object,
+    untilTime: PropTypes.object,
     title: PropTypes.string,
   }
 
@@ -189,8 +189,8 @@ export default class RangeDatepicker extends Component {
     }
     this.props.onConfirm && this.props.onConfirm({startDate: this.state.startDate,
                                                   untilDate: this.state.untilDate,
-                                                  timePickerFirst: this.state.timePickerFirst,
-                                                  timePickerSecond: this.state.timePickerSecond,
+                                                  startTime: this.state.startTime,
+                                                  untilTime: this.state.untilTime,
                                                  });
   }
 
@@ -221,12 +221,12 @@ export default class RangeDatepicker extends Component {
   onSelectTime = (time) => {
     if (this.state.timePickerType == 0) {
       this.setState({
-        timePickerFirst: moment(time),
+        startTime: moment(time),
         timePickerOpen: false,
       });
     } else {
       this.setState({
-        timePickerSecond: moment(time),
+        untilTime: moment(time),
         timePickerOpen: false,
       });
     }
@@ -260,12 +260,12 @@ export default class RangeDatepicker extends Component {
       );
     } else {
       let firstTimeButton;
-      if(this.state.timePickerFirst) {
+      if(this.state.startTime) {
         firstTimeButton =
           <Text
             style={{fontSize: 18, fontWeight: 'bold', color: '#666'}}
             onPress={() => this.openSelectTime(0)}>
-            {this.state.timePickerFirst.format("LT")}
+            {this.state.startTime.format("LT")}
           </Text>;
       }
       else {
@@ -279,12 +279,12 @@ export default class RangeDatepicker extends Component {
       }
 
       let secondTimeButton;
-      if(this.state.timePickerSecond) {
+      if(this.state.untilTime) {
         secondTimeButton =
           <Text
             style={{fontSize: 18, fontWeight: 'bold', color: '#666'}}
             onPress={() => this.openSelectTime(1)} >
-            {this.state.timePickerSecond.format("LT")}
+            {this.state.untilTime.format("LT")}
           </Text>;
       }
       else {
@@ -367,8 +367,8 @@ export default class RangeDatepicker extends Component {
               title="Select Date"
               onPress={this.handleConfirmDate}
               disabled={!this.state.startDate ||
-                        !this.state.timePickerFirst ||
-                        !this.state.timePickerSecond }
+                        !this.state.startTime ||
+                        !this.state.untilTime }
               color={this.props.buttonColor} />
           </View>
         </View>
