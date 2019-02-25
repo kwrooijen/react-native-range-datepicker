@@ -245,12 +245,23 @@ export default class RangeDatepicker extends Component {
     });
   };
 
+  getDate = () => {
+    if (this.state.timePickerType == 0 && this.state.startTime) {
+      return this.state.startTime.toDate();
+    } else if (this.state.timePickerType == 1 && this.state.untilTime) {
+      return this.state.untilTime.toDate();
+    } else {
+      return (new Date());
+    }
+  };
+
   render(){
     const monthStack = this.ds.cloneWithRows(this.getMonthStack());
     if (this.state.timePickerOpen) {
       return (
         <DateTimePicker
           isVisible={true}
+          date={this.getDate()}
           onConfirm={this.onSelectTime}
           onCancel={this.cancelTime}
           mode="time"
