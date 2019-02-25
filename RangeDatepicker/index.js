@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -15,7 +15,6 @@ import {
   Dimensions
 } from 'react-native';
 import Month from './Month';
-// import styles from './styles';
 import moment from 'moment';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
@@ -28,7 +27,7 @@ export default class RangeDatepicker extends Component {
       startDate: props.startDate && moment(props.startDate, 'YYYYMMDD'),
       untilDate: props.untilDate && moment(props.untilDate, 'YYYYMMDD'),
       availableDates: props.availableDates || null
-    }
+    };
 
     this.onSelectDate = this.onSelectDate.bind(this);
     this.onReset = this.onReset.bind(this);
@@ -171,7 +170,9 @@ export default class RangeDatepicker extends Component {
     if(!this.state.untilDate) {
       this.state.untilDate = this.state.startDate;
     }
-    this.props.onConfirm && this.props.onConfirm(this.state.startDate,this.state.untilDate);
+    this.props.onConfirm && this.props.onConfirm({startDate: this.state.startDate,
+                                                  untilDate: this.state.untilDate
+                                                 });
   }
 
   handleRenderRow(month) {
@@ -196,7 +197,7 @@ export default class RangeDatepicker extends Component {
         ignoreMinDate={ignoreMinDate}
         dayProps={{selectedBackgroundColor, selectedTextColor, todayColor}}
         month={month} />
-    )
+    );
   }
 
   render(){
@@ -216,6 +217,7 @@ export default class RangeDatepicker extends Component {
               :
               null
           }
+
           <View style={{ flexDirection: 'row', justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 5, alignItems: 'center'}}>
             <View style={{flex: 1}}>
               <Text style={{fontSize: 18, fontWeight: 'bold', color: '#666'}}>
