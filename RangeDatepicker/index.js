@@ -17,16 +17,22 @@ import {
 import Month from './Month';
 import moment from 'moment';
 
+import DateTimePicker from 'react-native-modal-datetime-picker';
+
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
 export default class RangeDatepicker extends Component {
   constructor(props) {
     super(props);
-      this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 != r2});
+    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 != r2});
     this.state = {
       startDate: props.startDate && moment(props.startDate, 'YYYYMMDD'),
       untilDate: props.untilDate && moment(props.untilDate, 'YYYYMMDD'),
-      availableDates: props.availableDates || null
+      availableDates: props.availableDates || null,
+      timePickerOpen: props.timePickerOpen || false,
+      timePickerType: props.timePickerType || 0,
+      timePickerFirst: props.timePickerFirst || null,
+      timePickerSecond: props.timePickerSecond || null,
     };
 
     this.onSelectDate = this.onSelectDate.bind(this);
@@ -58,7 +64,11 @@ export default class RangeDatepicker extends Component {
     maxDate: '',
     infoText: '',
     infoStyle: {color: '#fff', fontSize: 13},
-    infoContainerStyle: {marginRight: 20, paddingHorizontal: 20, paddingVertical: 5, backgroundColor: 'green', borderRadius: 20, alignSelf: 'flex-end'}
+    infoContainerStyle: {marginRight: 20, paddingHorizontal: 20, paddingVertical: 5, backgroundColor: 'green', borderRadius: 20, alignSelf: 'flex-end'},
+    timePickerOpen: false,
+    timePickerType: 0,
+    timePickerFirst: null,
+    timePickerSecond: null,
   };
 
 
@@ -86,7 +96,11 @@ export default class RangeDatepicker extends Component {
     todayColor: PropTypes.string,
     infoText: PropTypes.string,
     infoStyle: PropTypes.object,
-    infoContainerStyle: PropTypes.object
+    infoContainerStyle: PropTypes.object,
+    timePickerOpen: PropTypes.bool,
+    timePickerType: PropTypes.number,
+    timePickerFirst: PropTypes.object,
+    timePickerSecond: PropTypes.object,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -171,7 +185,9 @@ export default class RangeDatepicker extends Component {
       this.state.untilDate = this.state.startDate;
     }
     this.props.onConfirm && this.props.onConfirm({startDate: this.state.startDate,
-                                                  untilDate: this.state.untilDate
+                                                  untilDate: this.state.untilDate,
+                                                  timePickerFirst: this.state.timePickerFirst,
+                                                  timePickerSecond: this.state.timePickerSecond,
                                                  });
   }
 
@@ -199,10 +215,86 @@ export default class RangeDatepicker extends Component {
         month={month} />
     );
   }
+  onSelectTime = (time) => {
+    if (this.state.timePickerType == 0) {
+      this.setState({
+        timePickerFirst: moment(time),
+        timePickerOpen: false,
+      });
+    } else {
+      this.setState({
+        timePickerSecond: moment(time),
+        timePickerOpen: false,
+      });
+    }
+  };
+
+  openSelectTime = (type) => {
+    this.setState({
+      timePickerType: type,
+      timePickerOpen: true,
+    });
+  };
+
+  cancelTime = () => {
+    this.setState({
+      timePickerOpen: false,
+    });
+  };
 
   render(){
     const monthStack = this.ds.cloneWithRows(this.getMonthStack());
+    if (this.state.timePickerOpen) {
       return (
+        <DateTimePicker
+          isVisible={true}
+          onConfirm={this.onSelectTime}
+          onCancel={this.cancelTime}
+          mode="time"
+          datePickerModeAndroid="spinner"
+          is24Hour={false}
+        />
+      );
+    } else {
+      let firstTimeButton;
+      if(this.state.timePickerFirst) {
+        firstTimeButton =
+          <Text
+            style={{fontSize: 18, fontWeight: 'bold', color: '#666'}}
+            onPress={() => this.openSelectTime(0)}>
+            {this.state.timePickerFirst.format("LT")}
+          </Text>;
+      }
+      else {
+        firstTimeButton =
+          <Button
+            color={this.props.buttonColor}
+            style={{fontSize: 20}}
+            onPress={() => this.openSelectTime(0)}
+            title="Pick Time">
+          </Button>;
+      }
+
+      let secondTimeButton;
+      if(this.state.timePickerSecond) {
+        secondTimeButton =
+          <Text
+            style={{fontSize: 18, fontWeight: 'bold', color: '#666'}}
+            onPress={() => this.openSelectTime(1)} >
+            {this.state.timePickerSecond.format("LT")}
+          </Text>;
+      }
+      else {
+        secondTimeButton =
+          <Button
+            color={this.props.buttonColor}
+            style={{fontSize: 20}}
+            onPress={() => this.openSelectTime(1)}
+            title="Pick Time">
+          </Button>;
+      }
+
+      return(
         <View style={{backgroundColor: '#fff', zIndex: 1000, alignSelf: 'center'}}>
           {
             this.props.showClose || this.props.showReset ?
@@ -237,6 +329,10 @@ export default class RangeDatepicker extends Component {
               </Text>
             </View>
           </View>
+          <View style={{ flexDirection: 'row', justifyContent: "space-between", padding: 20, paddingBottom: 10}}>
+            {firstTimeButton}
+            {secondTimeButton}
+          </View>
           {
             this.props.infoText != "" &&
             <View style={this.props.infoContainerStyle}>
@@ -246,24 +342,27 @@ export default class RangeDatepicker extends Component {
           <View style={styles.dayHeader}>
             {
               this.props.dayHeadings.map((day, i) => {
-                return (<Text style={{width: DEVICE_WIDTH / 7, textAlign: 'center'}} key={i}>{day}</Text>)
+                return <Text style={{width: DEVICE_WIDTH / 7, textAlign: 'center'}} key={i}>{day}</Text>;
               })
             }
           </View>
           <ListView
-                  dataSource={monthStack}
-                  renderRow={this.handleRenderRow}
-                  initialListSize={1}
-                  showsVerticalScrollIndicator={false} />
+            dataSource={monthStack}
+            renderRow={this.handleRenderRow}
+            initialListSize={1}
+            showsVerticalScrollIndicator={false} />
           <View style={[styles.buttonWrapper, this.props.buttonContainerStyle]}>
             <Button
               title="Select Date"
               onPress={this.handleConfirmDate}
-              disabled={!this.state.startDate}
+              disabled={!this.state.startDate ||
+                        !this.state.timePickerFirst ||
+                        !this.state.timePickerSecond }
               color={this.props.buttonColor} />
           </View>
         </View>
-      )
+      );
+    };
   }
 }
 
