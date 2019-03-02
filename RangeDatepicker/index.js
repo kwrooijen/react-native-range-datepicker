@@ -27,8 +27,8 @@ export default class RangeDatepicker extends Component {
     super(props);
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 != r2});
     this.state = {
-      startDate: props.startDate && moment(props.startDate, 'YYYYMMDD'),
-      untilDate: props.untilDate && moment(props.untilDate, 'YYYYMMDD'),
+      startDate: props.startDate || null,
+      untilDate: props.untilDate || null,
       availableDates: props.availableDates || null,
       timePickerOpen: props.timePickerOpen || false,
       timePickerType: props.timePickerType || 0,
@@ -81,8 +81,8 @@ export default class RangeDatepicker extends Component {
     maxMonth: PropTypes.number,
     buttonColor: PropTypes.string,
     buttonContainerStyle: PropTypes.object,
-    startDate: PropTypes.string,
-    untilDate: PropTypes.string,
+    startDate: PropTypes.object,
+    untilDate: PropTypes.object,
     minDate: PropTypes.string,
     maxDate: PropTypes.string,
     showReset: PropTypes.bool,

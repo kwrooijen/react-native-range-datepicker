@@ -91,7 +91,7 @@ export default class Month extends React.Component {
           if((startDate && startDate.format('YYYYMMDD') < currDate.format('YYYYMMDD')) &&
             (untilDate && untilDate.format('YYYYMMDD') > currDate.format('YYYYMMDD')))
             dayObject.type = 'between';
-          if(untilDate && (startDate + '') == (untilDate + '') &&
+          if(untilDate && startDate.format('YYYYMMDD') == untilDate.format('YYYYMMDD') &&
              untilDate.format('YYYYMMDD') == currDate.format('YYYYMMDD')){
             dayObject.type = 'single';
           }
