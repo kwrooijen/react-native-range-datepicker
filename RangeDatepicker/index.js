@@ -66,6 +66,7 @@ export default class RangeDatepicker extends Component {
     infoText: '',
     infoStyle: {color: '#fff', fontSize: 13},
     infoContainerStyle: {marginRight: 20, paddingHorizontal: 20, paddingVertical: 5, backgroundColor: 'green', borderRadius: 20, alignSelf: 'flex-end'},
+    timePicker: true,
     timePickerOpen: false,
     timePickerType: 0,
     startTime: null,
@@ -99,6 +100,7 @@ export default class RangeDatepicker extends Component {
     infoText: PropTypes.string,
     infoStyle: PropTypes.object,
     infoContainerStyle: PropTypes.object,
+    timePicker: PropTypes.bool,
     timePickerOpen: PropTypes.bool,
     timePickerType: PropTypes.number,
     startTime: PropTypes.object,
@@ -271,7 +273,7 @@ export default class RangeDatepicker extends Component {
       );
     } else {
       let firstTimeButton;
-      if(this.state.startTime) {
+      if(this.state.startTime && this.props.timePicker) {
         firstTimeButton =
           <Text
             style={{fontSize: 18, fontWeight: 'bold', color: '#666'}}
@@ -279,7 +281,7 @@ export default class RangeDatepicker extends Component {
             {this.state.startTime.format("LT")}
           </Text>;
       }
-      else {
+      else if (this.props.timePicker){
         firstTimeButton =
           <Button
             color={this.props.buttonColor}
@@ -290,7 +292,7 @@ export default class RangeDatepicker extends Component {
       }
 
       let secondTimeButton;
-      if(this.state.untilTime) {
+      if(this.state.untilTime && this.props.timePicker) {
         secondTimeButton =
           <Text
             style={{fontSize: 18, fontWeight: 'bold', color: '#666'}}
@@ -298,7 +300,7 @@ export default class RangeDatepicker extends Component {
             {this.state.untilTime.format("LT")}
           </Text>;
       }
-      else {
+      else if (this.props.timePicker){
         secondTimeButton =
           <Button
             color={this.props.buttonColor}
@@ -378,8 +380,8 @@ export default class RangeDatepicker extends Component {
               title="Select Date"
               onPress={this.handleConfirmDate}
               disabled={!this.state.startDate ||
-                        !this.state.startTime ||
-                        !this.state.untilTime }
+                        (this.props.timePicker && !this.state.startTime) ||
+                        (this.props.timePicker && !this.state.untilTime) }
               color={this.props.buttonColor} />
           </View>
         </View>
